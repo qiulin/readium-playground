@@ -17,4 +17,3 @@ todos.json
 
 # Playwright logs
 .playwright-mcp/
-.claude/settings.local.json
