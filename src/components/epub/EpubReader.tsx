@@ -9,6 +9,7 @@ import {
   prev,
   destroy,
   getToc,
+  resize,
 } from '#/services/epub/renderer'
 import { getPreferences, setTheme, setFontSize } from '#/services/storage/preferences'
 import { TableOfContents } from './TableOfContents'
@@ -101,6 +102,25 @@ export function EpubReader({
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  // Window resize handler
+  useEffect(() => {
+    let resizeTimeout: ReturnType<typeof setTimeout>
+
+    const handleResize = () => {
+      // Debounce resize events
+      clearTimeout(resizeTimeout)
+      resizeTimeout = setTimeout(() => {
+        resize()
+      }, 100)
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      clearTimeout(resizeTimeout)
+    }
   }, [])
 
   // Load EPUB

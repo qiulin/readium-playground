@@ -286,6 +286,11 @@ a {
   transition: background-color 200ms ease, color 200ms ease;
 }
 
+.reader-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .reader-controls {
   transition: opacity 300ms ease, transform 300ms ease;
 }

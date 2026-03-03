@@ -139,4 +139,9 @@ export async function getToc(): Promise<TocItem[]> {
   }))
 }
 
+export function resize(): void {
+  if (!currentRendition) return
+  currentRendition.resize()
+}
+
 export { currentBook, currentRendition }
