@@ -50,8 +50,30 @@
   --hero-b: rgba(110, 200, 154, 0.12);
 }
 
+:root[data-theme="sepia"] {
+  --sea-ink: #5B4636;
+  --sea-ink-soft: #7A6552;
+  --lagoon: #8B7355;
+  --lagoon-deep: #A08968;
+  --palm: #6B5D4D;
+  --sand: #F4ECD8;
+  --foam: #FAF6ED;
+  --surface: rgba(244, 236, 216, 0.85);
+  --surface-strong: rgba(255, 251, 245, 0.95);
+  --line: rgba(91, 70, 54, 0.2);
+  --inset-glint: rgba(255, 255, 255, 0.7);
+  --kicker: rgba(139, 115, 85, 0.9);
+  --bg-base: #F4ECD8;
+  --header-bg: rgba(244, 236, 216, 0.85);
+  --chip-bg: rgba(255, 251, 245, 0.85);
+  --chip-line: rgba(91, 70, 54, 0.2);
+  --link-bg-hover: rgba(255, 255, 255, 0.9);
+  --hero-a: rgba(139, 115, 85, 0.2);
+  --hero-b: rgba(107, 93, 77, 0.15);
+}
+
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme="light"]):not([data-theme="sepia"]) {
     --sea-ink: #d7ece8;
     --sea-ink-soft: #afcdc8;
     --lagoon: #60d7cf;
@@ -256,4 +278,77 @@ a {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* Reader-specific styles */
+.reader-container {
+  min-height: 100vh;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.reader-content {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.reader-controls {
+  transition: opacity 300ms ease, transform 300ms ease;
+}
+
+.reader-controls.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+/* Font size presets for reader */
+.reader-font-small {
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.reader-font-medium {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.reader-font-large {
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+/* Focus indicator for keyboard navigation */
+.reader-content:focus {
+  outline: 2px solid var(--lagoon);
+  outline-offset: 4px;
+}
+
+.reader-content:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Edge click zones for navigation */
+.reader-nav-edge {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 15%;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.reader-nav-edge-left {
+  left: 0;
+}
+
+.reader-nav-edge-right {
+  right: 0;
+}
+
+.reader-nav-edge:hover {
+  background: linear-gradient(90deg, var(--surface) 0%, transparent 100%);
+}
+
+.reader-nav-edge-right:hover {
+  background: linear-gradient(-90deg, var(--surface) 0%, transparent 100%);
 }

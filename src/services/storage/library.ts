@@ -40,3 +40,21 @@ export async function getEpubBlob(bookId: string): Promise<Blob | undefined> {
   const result = await db.get('epubBlobs', bookId)
   return result?.blob
 }
+
+export async function addCover(bookId: string, coverBlob: Blob, mimeType: string): Promise<void> {
+  const db = await openDatabase()
+  await db.put('covers', {
+    bookId,
+    blob: coverBlob,
+    mimeType,
+  })
+}
+
+export async function getCover(bookId: string): Promise<string | undefined> {
+  const db = await openDatabase()
+  const result = await db.get('covers', bookId)
+  if (result) {
+    return URL.createObjectURL(result.blob)
+  }
+  return undefined
+}

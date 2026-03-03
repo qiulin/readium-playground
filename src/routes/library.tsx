@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState, useEffect } from 'react'
 import { useStore } from '@tanstack/react-store'
 import { parseEpub } from '#/services/epub/parser'
-import { getBooks, addBook, removeBook as removeBookFromStorage, getEpubBlob } from '#/services/storage/library'
+import { getBooks, addBook, removeBook as removeBookFromStorage, getEpubBlob, addCover, getCover } from '#/services/storage/library'
 import { getProgress, saveProgress } from '#/services/storage/progress'
 import { libraryStore, libraryActions } from '#/stores/library'
 import { FileImporter } from '#/components/epub/FileImporter'
@@ -17,6 +17,7 @@ function LibraryPage() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [progress, setProgressState] = useState<Record<string, ReadingProgress>>({})
+  const [covers, setCovers] = useState<Record<string, string>>({})
 
   // Subscribe to store
   const books = useStore(libraryStore, (state) => state.books) ?? []
@@ -27,13 +28,18 @@ function LibraryPage() {
       const storedBooks = await getBooks()
       libraryActions.setBooks(storedBooks)
 
-      // Load progress for each book
+      // Load progress and cover for each book
       const progressMap: Record<string, ReadingProgress> = {}
+      const coverMap: Record<string, string> = {}
       for (const book of storedBooks) {
         const p = await getProgress(book.id)
         if (p) progressMap[book.id] = p
+
+        const coverUrl = await getCover(book.id)
+        if (coverUrl) coverMap[book.id] = coverUrl
       }
       setProgressState(progressMap)
+      setCovers(coverMap)
     }
 
     loadBooks()
@@ -43,9 +49,16 @@ function LibraryPage() {
     setIsLoading(true)
 
     try {
-      const { book, blob } = await parseEpub(file)
+      const { book, blob, coverBlob, coverMimeType } = await parseEpub(file)
       await addBook(book, blob)
       libraryActions.addBook(book)
+
+      // Save cover if available
+      if (coverBlob && coverMimeType) {
+        await addCover(book.id, coverBlob, coverMimeType)
+        const coverUrl = URL.createObjectURL(coverBlob)
+        setCovers((prev) => ({ ...prev, [book.id]: coverUrl }))
+      }
 
       // Initialize progress
       const initialProgress: ReadingProgress = {
@@ -107,6 +120,7 @@ function LibraryPage() {
               key={book.id}
               book={book}
               progress={progress[book.id]}
+              coverUrl={covers[book.id]}
               onClick={() => handleBookClick(book)}
               onRemove={() => handleRemoveBook(book.id)}
             />

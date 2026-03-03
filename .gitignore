@@ -11,3 +11,9 @@ dist-ssr
 .vinxi
 __unconfig*
 todos.json
+
+# Local config
+.claude/settings.local.json
+
+# Playwright logs
+.playwright-mcp/

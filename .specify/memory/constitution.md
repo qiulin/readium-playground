@@ -1,50 +1,55 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# Readium Playground Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. 中文优先 (Chinese First)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+所有问答交流和文档生成优先使用中文。这包括但不限于：需求澄清、设计讨论、代码审查反馈、任务说明等。使用中文可以确保与用户的高效沟通，减少语言歧义。
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. 图书馆优先 (Library-First)
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+每个功能作为独立模块开发；模块必须自包含、可独立测试、有清晰文档；不接受仅为组织目的而创建的模块。
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. 测试驱动 (Test-First)
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+TDD 强制执行：测试先行 → 用户确认 → 测试失败 → 然后实现。严格遵守 Red-Green-Refactor 循环。
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### IV. 集成测试聚焦
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+集成测试重点覆盖：新模块契约测试、契约变更、服务间通信、共享模式。
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. 简洁优先 (Simplicity)
+
+从简单开始，遵循 YAGNI 原则。优先选择简单方案而非复杂方案，避免过度工程。
+
+## Additional Constraints
+
+### 技术栈
+
+- TypeScript 5.7 + TanStack Start
+- React 19 + @readium/js
+- IndexedDB (idb) 用于本地存储
+
+### 代码质量
+
+- 必须通过 `npm test && npm run lint`
+- 遵循 TypeScript 标准规范
+
+## Development Workflow
+
+### 开发流程
+
+1. 使用 speckit 工具进行需求管理
+2. 规格说明 → 澄清 → 规划 → 任务 → 实现 → 验证
+3. 每个功能独立开发和测试
+
+### 代码审查
+
+- 必须验证与 Constitution 一致性
+- 复杂度必须有充分理由
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+Constitution 优先于所有其他实践；修正需要文档记录、审批和迁移计划。
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 0.2.0 | **Ratified**: 2026-03-03 | **Last Amended**: 2026-03-03

@@ -39,3 +39,13 @@ export interface EpubMetadata {
 }
 
 export type DisplayMode = 'paginated' | 'scrolled';
+
+// User Preferences for reader settings
+export type Theme = 'light' | 'dark' | 'sepia';
+export type FontSize = 'small' | 'medium' | 'large';
+
+export interface UserPreferences {
+  id: string;
+  theme: Theme;
+  fontSize: FontSize;
+}
