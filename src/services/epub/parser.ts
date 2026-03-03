@@ -5,6 +5,8 @@ export async function parseEpub(file: File): Promise<{
   metadata: EpubMetadata
   toc: TocItem[]
   blob: Blob
+  coverBlob?: Blob
+  coverMimeType?: string
 }> {
   // Use epubjs to load and parse the book
   const { Book } = await import('epubjs')
@@ -24,11 +26,20 @@ export async function parseEpub(file: File): Promise<{
     description: metadata.description,
   }
 
-  // Get cover
+  // Get cover as blob
+  let coverBlob: Blob | undefined
+  let coverMimeType: string | undefined
   try {
     const cover = await book.loaded.cover
     if (cover) {
-      epubMetadata.coverUrl = cover
+      // The cover URL is relative, try to fetch it as a blob
+      const coverUrl = new URL(cover, URL.createObjectURL(file)).href
+      const response = await fetch(coverUrl)
+      if (response.ok) {
+        const blob = await response.blob()
+        coverBlob = blob
+        coverMimeType = blob.type || 'image/jpeg'
+      }
     }
   } catch {
     // No cover available
@@ -67,6 +78,8 @@ export async function parseEpub(file: File): Promise<{
     metadata: epubMetadata,
     toc,
     blob: file,
+    coverBlob,
+    coverMimeType,
   }
 }
 

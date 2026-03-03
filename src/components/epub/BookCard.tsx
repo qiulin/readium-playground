@@ -3,20 +3,21 @@ import type { Book, ReadingProgress } from '#/types/epub'
 interface BookCardProps {
   book: Book
   progress?: ReadingProgress
+  coverUrl?: string
   onClick: () => void
   onRemove: () => void
 }
 
-export function BookCard({ book, progress, onClick, onRemove }: BookCardProps) {
+export function BookCard({ book, progress, coverUrl, onClick, onRemove }: BookCardProps) {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer group">
       <div
         className="aspect-[2/3] bg-gray-200 relative"
         onClick={onClick}
       >
-        {book.coverUrl ? (
+        {coverUrl ? (
           <img
-            src={book.coverUrl}
+            src={coverUrl}
             alt={book.title}
             className="w-full h-full object-cover"
           />

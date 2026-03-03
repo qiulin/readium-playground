@@ -1,8 +1,8 @@
 import { openDB, type IDBPDatabase } from 'idb'
-import type { Book, ReadingProgress } from '#/types/epub'
+import type { Book, ReadingProgress, UserPreferences } from '#/types/epub'
 
 const DB_NAME = 'readium-library'
-const DB_VERSION = 1
+const DB_VERSION = 3 // Bumped to add covers store
 
 interface LibraryDB {
   books: Book
@@ -15,6 +15,15 @@ interface LibraryDB {
     }
   }
   progress: ReadingProgress
+  covers: {
+    key: string
+    value: {
+      bookId: string
+      blob: Blob
+      mimeType: string
+    }
+  }
+  preferences: UserPreferences
 }
 
 let dbInstance: IDBPDatabase<LibraryDB> | null = null
@@ -42,6 +51,16 @@ export async function openDatabase(): Promise<IDBPDatabase<LibraryDB>> {
       if (!db.objectStoreNames.contains('progress')) {
         const progressStore = db.createObjectStore('progress', { keyPath: 'bookId' })
         progressStore.createIndex('updatedAt', 'updatedAt')
+      }
+
+      // Cover images store
+      if (!db.objectStoreNames.contains('covers')) {
+        db.createObjectStore('covers', { keyPath: 'bookId' })
+      }
+
+      // Preferences store
+      if (!db.objectStoreNames.contains('preferences')) {
+        db.createObjectStore('preferences', { keyPath: 'id' })
       }
     },
   })
